@@ -1,9 +1,8 @@
 ﻿using GraphQL.Types;
-using GraphQLServer.Api.Models;
 
 namespace GraphQLServer.Api.GraphQL.Types
 {
-    public class KeywordTypeType: ObjectGraphType<Models.KeywordType>
+    public class KeywordTypeType: ObjectGraphType<GraphQLServer.Core.Models.KeywordType>
     {
         public KeywordTypeType()
         {

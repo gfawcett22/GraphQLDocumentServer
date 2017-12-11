@@ -1,17 +1,17 @@
 ﻿using GraphQL.Types;
 using GraphQLServer.Api.GraphQL.Types;
-using GraphQLServer.Api.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using GraphQLServer.Core.Data;
 
 namespace GraphQLServer.Api.Api.GraphQL.Queries
 {
     public class DocumentQuery : ObjectGraphType
     {
+        public DocumentQuery() { }
+
         public DocumentQuery(IDocumentRepository docRepo, IDocumentTypeRepository docTypeRepo)
         {
+            Name = "Query";
+
             Field<ListGraphType<DocumentType>>("documents",
                 resolve: context => docRepo.GetDocuments());
 

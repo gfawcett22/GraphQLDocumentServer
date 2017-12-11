@@ -1,9 +1,6 @@
-﻿using GraphQLServer.Api.GraphQL.Queries;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 using GraphQL.Types;
+using GraphQLServer.Api.Api.GraphQL.Queries;
 
 namespace GraphQLServer.Api.GraphQL.Schemas
 {

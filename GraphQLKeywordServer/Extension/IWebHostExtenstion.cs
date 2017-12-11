@@ -1,4 +1,4 @@
-﻿using GraphQLServer.Api.Contexts;
+﻿using GraphQLServer.Core.Contexts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

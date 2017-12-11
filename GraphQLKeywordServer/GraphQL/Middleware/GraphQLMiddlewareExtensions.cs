@@ -1,8 +1,9 @@
 ﻿using GraphQL;
 using GraphQL.Http;
 using GraphQL.Types;
+using GraphQLServer.Api.Api.GraphQL.Queries;
 using GraphQLServer.Api.GraphQL.Queries;
-using GraphQLServer.Api.Repositories;
+using GraphQLServer.Core.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -30,7 +31,7 @@ namespace GraphQLServer.Api.GraphQL.Middleware
         public async Task Invoke(HttpContext httpContext, IDocumentRepository docRepo, IDocumentTypeRepository docTypeRepo)
         {
             var sent = false;
-            if (httpContext.Request.Path.StartsWithSegments("/graph"))
+            if (httpContext.Request.Path.StartsWithSegments("/graphql"))
             {
                 using (var sr = new StreamReader(httpContext.Request.Body))
                 {

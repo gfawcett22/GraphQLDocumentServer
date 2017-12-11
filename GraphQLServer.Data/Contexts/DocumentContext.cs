@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using GraphQLServer.Api.Models;
+using GraphQLServer.Core.Models;
 
-namespace GraphQLServer.Api.Contexts
+namespace GraphQLServer.Core.Contexts
 {
     public class DocumentContext : DbContext
     {

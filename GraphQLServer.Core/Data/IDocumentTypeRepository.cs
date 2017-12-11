@@ -1,7 +1,7 @@
-﻿using GraphQLServer.Api.Models;
+﻿using GraphQLServer.Core.Models;
 using System.Collections.Generic;
 
-namespace GraphQLServer.Api.Repositories
+namespace GraphQLServer.Core.Data
 {
     public interface IDocumentTypeRepository
     {

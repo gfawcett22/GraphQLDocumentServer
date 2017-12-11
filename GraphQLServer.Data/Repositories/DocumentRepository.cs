@@ -1,10 +1,11 @@
-﻿using GraphQLServer.Api.Contexts;
-using GraphQLServer.Api.Models;
+﻿using GraphQLServer.Core.Contexts;
+using GraphQLServer.Core.Data;
+using GraphQLServer.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GraphQLServer.Api.Repositories
+namespace GraphQLServer.Core.Repositories
 {
     public class DocumentRepository : IDocumentRepository
     {

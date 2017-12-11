@@ -1,9 +1,5 @@
 ﻿using GraphQL.Types;
-using GraphQLServer.Api.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using GraphQLServer.Core.Models;
 
 namespace GraphQLServer.Api.GraphQL.Types
 {

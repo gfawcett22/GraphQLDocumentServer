@@ -1,9 +1,6 @@
-﻿using System;
+﻿using GraphQLServer.Core.Contexts;
+using GraphQLServer.Core.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using GraphQLServer.Api.Models;
 
 namespace GraphQLServer.Api.Contexts.Data
 {
