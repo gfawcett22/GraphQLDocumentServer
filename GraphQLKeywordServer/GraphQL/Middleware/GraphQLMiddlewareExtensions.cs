@@ -28,7 +28,7 @@ namespace GraphQLServer.Api.GraphQL.Middleware
             _next = next;
         }
 
-        public async Task Invoke(HttpContext httpContext, IDocumentRepository docRepo, IDocumentTypeRepository docTypeRepo)
+        public async Task Invoke(HttpContext httpContext, IDocumentRepository docRepo, IDocumentTypeRepository docTypeRepo, IKeywordRepository keywordRepo, IKeywordTypeRepository keywordTypeRepo)
         {
             var sent = false;
             if (httpContext.Request.Path.StartsWithSegments("/graphql"))
@@ -38,7 +38,7 @@ namespace GraphQLServer.Api.GraphQL.Middleware
                     var query = await sr.ReadToEndAsync();
                     if (!String.IsNullOrWhiteSpace(query))
                     {
-                        var schema = new Schema { Query = new DocumentQuery(docRepo, docTypeRepo) };
+                        var schema = new Schema { Query = new DocumentQuery(docRepo, docTypeRepo, keywordRepo, keywordTypeRepo) };
                         var result = await new DocumentExecuter()
                             .ExecuteAsync(opts =>
                             {

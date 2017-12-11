@@ -8,14 +8,14 @@ namespace GraphQLServer.Api.Api.GraphQL.Queries
     {
         public DocumentQuery() { }
 
-        public DocumentQuery(IDocumentRepository docRepo, IDocumentTypeRepository docTypeRepo)
+        public DocumentQuery(IDocumentRepository docRepo, IDocumentTypeRepository docTypeRepo, IKeywordRepository keywordRepo, IKeywordTypeRepository keywordTypeRepo)
         {
             Name = "Query";
 
-            Field<ListGraphType<DocumentType>>("documents",
+            Field<ListGraphType<DocumentGraphType>>("documents",
                 resolve: context => docRepo.GetDocuments());
 
-            Field<DocumentType>("document",
+            Field<DocumentGraphType>("document",
                 arguments: new QueryArguments(
                     new QueryArgument<IdGraphType>() { Name = "id" }),
                 resolve: context =>
@@ -24,16 +24,40 @@ namespace GraphQLServer.Api.Api.GraphQL.Queries
                     return docRepo.GetDocument(id);
                 });
 
-            Field<ListGraphType<DocumentTypeType>>("documentTypes",
+            Field<ListGraphType<DocumentTypeGraphType>>("documentTypes",
                 resolve: context => docTypeRepo.GetDocumentTypes());
 
-            Field<DocumentTypeType>("documentType",
+            Field<DocumentTypeGraphType>("documentType",
                 arguments: new QueryArguments(
                     new QueryArgument<IdGraphType>() { Name = "id" }),
                 resolve: context =>
                 {
                     var id = context.GetArgument<int>("id");
                     return docTypeRepo.GetDocumentType(id);
+                });
+
+            Field<KeywordGraphType>("keywords",
+                resolve: context => keywordRepo.GetKeywords());
+
+            Field<KeywordGraphType>("keyword",
+                arguments: new QueryArguments(
+                    new QueryArgument<IdGraphType>() { Name = "id" }),
+                resolve: context =>
+                {
+                    var id = context.GetArgument<int>("id");
+                    return keywordRepo.GetKeyword(id);
+                });
+
+            Field<KeywordGraphType>("keywordTypess",
+                resolve: context => keywordTypeRepo.GetKeywordTypes());
+
+            Field<KeywordGraphType>("keywordType",
+                arguments: new QueryArguments(
+                    new QueryArgument<IdGraphType>() { Name = "id" }),
+                resolve: context =>
+                {
+                    var id = context.GetArgument<int>("id");
+                    return keywordTypeRepo.GetKeywordType(id);
                 });
         }
     }

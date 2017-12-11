@@ -7,6 +7,7 @@ namespace GraphQLServer.Core.Data
     public interface IDocumentRepository
     {
         IEnumerable<Document> GetDocuments();
+        IEnumerable<Document> GetDocuments(int DocumentTypeId);
         Document GetDocument(int documentId);
         void AddDocument(Document document);
         void DeleteDocument(Document document);

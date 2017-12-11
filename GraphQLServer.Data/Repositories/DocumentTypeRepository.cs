@@ -17,17 +17,14 @@ namespace GraphQLServer.Core.Repositories
         {
             _context = context;
         }
-        public IEnumerable<DocumentType> GetDocumentTypes() => _context.DocumentTypes
-                                                                            .Include(dt => dt.Documents)
-                                                                            .Include(dt => dt.DocumentTypeKeywordTypes)
-                                                                            .ThenInclude(dtkt => dtkt.KeywordType)
-                                                                            .ToList();
+        public IEnumerable<DocumentType> GetDocumentTypes() => _context.DocumentTypes.ToList();
 
-        public DocumentType GetDocumentType(int documentTypeId) => _context.DocumentTypes
-                                                                            .Include(dt => dt.Documents)
-                                                                            .Include(dt => dt.DocumentTypeKeywordTypes)
-                                                                            .ThenInclude(dtkt => dtkt.KeywordType)
-                                                                            .FirstOrDefault(dt => dt.DocumentTypeId == documentTypeId);
+        public IEnumerable<DocumentType> GetDocumentTypes(int KeywordTypeId) => _context.DocumentTypes
+                                                                                    .Where(dt => dt.DocumentTypeKeywordTypes
+                                                                                        .Any(dtkt => dtkt.KeywordTypeId == KeywordTypeId))
+                                                                                    .ToList();
+
+        public DocumentType GetDocumentType(int documentTypeId) => _context.DocumentTypes.FirstOrDefault(dt => dt.DocumentTypeId == documentTypeId);
 
         public void AddDocumentType(DocumentType documentType)
         {

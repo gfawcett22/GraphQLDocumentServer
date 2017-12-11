@@ -33,12 +33,16 @@ namespace GraphQLServer.Api
             //services.AddDbContext<DocumentContext>(options => options.UseInMemoryDatabase("Test"));
             services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
+            services.AddScoped<IKeywordRepository, KeywordRepository>();
+            services.AddScoped<IKeywordTypeRepository, KeywordTypeRepository>();
+
             services.AddScoped<DocumentQuery>();
 
-            services.AddTransient<GraphQL.Types.DocumentType>();
-            services.AddTransient<GraphQL.Types.DocumentTypeType>();
-            services.AddTransient<GraphQL.Types.KeywordType>();
-            services.AddTransient<GraphQL.Types.KeywordTypeType>();
+            // GraphQL Types
+            services.AddTransient<GraphQL.Types.DocumentGraphType>();
+            services.AddTransient<GraphQL.Types.DocumentTypeGraphType>();
+            services.AddTransient<GraphQL.Types.KeywordGraphType>();
+            services.AddTransient<GraphQL.Types.KeywordTypeGraphType>();
 
             services.AddScoped<IDocumentExecuter, DocumentExecuter>();
             var sp = services.BuildServiceProvider();

@@ -15,11 +15,8 @@ namespace GraphQLServer.Core.Repositories
             _context = context;
         }
         public IEnumerable<Document> GetDocuments() => _context.Documents.ToList();
-                                                                    //.Include(d => d.DocumentType)
-                                                                    //.Include(d => d.DocumentKeywords)
-                                                                    //.ThenInclude(dk => dk.Keyword)
-                                                                    //.ThenInclude(k => k.KeywordType)
-                                                                    //.ToList();
+
+        public IEnumerable<Document> GetDocuments(int DocumentTypeId) => _context.Documents.Where(d => d.DocumentType.DocumentTypeId == DocumentTypeId);
 
         public void AddDocument(Document document)
         {
@@ -28,12 +25,8 @@ namespace GraphQLServer.Core.Repositories
 
         public bool DocumentExists(int documentId) => _context.Documents.Any(d => d.DocumentId == documentId);
 
-        public Document GetDocument(int documentId) => _context.Documents
-                                                                    //.Include(d => d.DocumentType)
-                                                                    //.Include(d => d.DocumentKeywords)
-                                                                    //.ThenInclude(dk => dk.Keyword)
-                                                                    //.ThenInclude(k => k.KeywordType)
-                                                                    .FirstOrDefault(d => d.DocumentId == documentId);
+        public Document GetDocument(int documentId) => _context.Documents.FirstOrDefault(d => d.DocumentId == documentId);
+
         public void UpdateDocument(Document document)
         {
             _context.Update(document);
@@ -49,7 +42,6 @@ namespace GraphQLServer.Core.Repositories
         {
             return _context.SaveChanges() > 0;
         }
-
 
     }
 }
