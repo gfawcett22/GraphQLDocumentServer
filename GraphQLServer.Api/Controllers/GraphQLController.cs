@@ -32,7 +32,7 @@ namespace GraphQLServer.Api.Controllers
         public async Task<IActionResult> Post([FromBody] GraphQLQuery query)
         {
             if (query == null) { throw new ArgumentNullException(nameof(query)); }
-            var executionOptions = new ExecutionOptions { Schema = _schema, Query = query.Query };
+            var executionOptions = new ExecutionOptions { Schema = _schema, Query = query.Query, Inputs = query.Variables.ToInputs() };
 
             try
             {

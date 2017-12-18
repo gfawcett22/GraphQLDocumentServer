@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +13,7 @@ using GraphQLServer.Core.Repositories;
 using GraphQLServer.Core.Contexts;
 using GraphQLServer.Api.Api.GraphQL.Queries;
 using GraphQLServer.Data.Seed;
-using Microsoft.Extensions.Logging;
+using GraphQLServer.Api.GraphQL.Mutations;
 
 namespace GraphQLServer.Api
 {
@@ -28,13 +29,14 @@ namespace GraphQLServer.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var dbHostName = Environment.GetEnvironmentVariable("SQLSERVER_HOST") ?? "localhost";
-            Console.WriteLine($"SQL Server Host: {dbHostName}");
-            var dbPassword = Environment.GetEnvironmentVariable("SQLSERVER_SA_PASSWORD") ?? "Password123";
-            Console.WriteLine($"SQL Server Host: {dbPassword}");
-            var connString = $"Data Source={dbHostName};Initial Catalog=GraphQL;User ID=sa;Password={dbPassword};";
-            services.AddDbContext<DocumentContext>(options => options.UseSqlServer(connString));
-            //services.AddDbContext<DocumentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GraphDatabaseConnection")));
+            services.AddAutoMapper(typeof(Startup));
+            //var dbHostName = Environment.GetEnvironmentVariable("SQLSERVER_HOST") ?? "localhost";
+            //Console.WriteLine($"SQL Server Host: {dbHostName}");
+            //var dbPassword = Environment.GetEnvironmentVariable("SQLSERVER_SA_PASSWORD") ?? "Password123";
+            //Console.WriteLine($"SQL Server Host: {dbPassword}");
+            //var connString = $"Data Source={dbHostName};Initial Catalog=GraphQL;User ID=sa;Password={dbPassword};";
+            //services.AddDbContext<DocumentContext>(options => options.UseSqlServer(connString));
+            services.AddDbContext<DocumentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GraphDatabaseConnection")));
             //services.AddDbContext<DocumentContext>(options => options.UseInMemoryDatabase("Test"));
             services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
@@ -42,18 +44,20 @@ namespace GraphQLServer.Api
             services.AddScoped<IKeywordTypeRepository, KeywordTypeRepository>();
 
             services.AddScoped<DocumentQuery>();
+            services.AddScoped<DocumentMutation>();
 
             // GraphQL Types
             services.AddTransient<GraphQL.Types.DocumentGraphType>();
+            services.AddTransient<GraphQL.Types.DocumentInputType>();
             services.AddTransient<GraphQL.Types.DocumentTypeGraphType>();
             services.AddTransient<GraphQL.Types.KeywordGraphType>();
             services.AddTransient<GraphQL.Types.KeywordTypeGraphType>();
 
             services.AddScoped<IDocumentExecuter, DocumentExecuter>();
             var sp = services.BuildServiceProvider();
-            services.AddScoped<ISchema>(_ => new DocumentSchema(type => (GraphType)sp.GetService(type)) { Query = sp.GetService<DocumentQuery>() });
+            services.AddScoped<ISchema>(_ => new DocumentSchema(type => (GraphType)sp.GetService(type)) { Query = sp.GetService<DocumentQuery>(), Mutation = sp.GetService<DocumentMutation>() });
 
-
+            
             services.AddMvc();
         }
 
