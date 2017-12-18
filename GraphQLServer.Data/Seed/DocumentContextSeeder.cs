@@ -2,13 +2,12 @@
 using GraphQLServer.Core.Models;
 using System.Collections.Generic;
 
-namespace GraphQLServer.Api.Contexts.Data
+namespace GraphQLServer.Data.Seed
 {
     public static class DocumentContextSeeder
     {
         public static void Seed(DocumentContext db)
         {
-            db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
 
             // Keyword types

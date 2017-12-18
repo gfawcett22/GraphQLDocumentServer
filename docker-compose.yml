@@ -1,0 +1,48 @@
+version: '3'
+
+services: 
+
+  mssqldb:
+    image: "microsoft/mssql-server-linux"
+    build: 
+      context: ./GraphQLServer.Data
+      dockerfile: Dockerfile 
+    environment: 
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Password123"
+    ports:
+      - "1433:1433"
+    networks:
+      - graph-network
+    # stateful: true
+    # secrets:
+    #     - secret: SQLSERVER_SA_PASSWORD
+    #       name: SA_PASSWORD
+    #       type: env
+    volumes:
+      - /var/opt/mssql
+
+  api: 
+    image: api
+    build:
+      context: ./GraphQLServer.Api
+      dockerfile: Dockerfile
+    depends_on: 
+      - mssqldb
+    environment:
+        SQLSERVER_HOST: mssqldb  
+    networks:
+      - graph-network
+    ports:
+      - "5000:5000"
+    # secrets:
+    #     - secret: SQLSERVER_SA_PASSWORD
+    #       name: SQLSERVER_SA_PASSWORD
+    #       type: env
+
+# secrets:
+#   SQLSERVER_SA_PASSWORD
+
+networks:
+  graph-network:
+    driver: bridge

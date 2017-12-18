@@ -48,7 +48,7 @@ namespace GraphQLServer.Api.Api.GraphQL.Queries
                     return keywordRepo.GetKeyword(id);
                 });
 
-            Field<KeywordGraphType>("keywordTypess",
+            Field<KeywordGraphType>("keywordTypes",
                 resolve: context => keywordTypeRepo.GetKeywordTypes());
 
             Field<KeywordGraphType>("keywordType",

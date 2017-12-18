@@ -3,17 +3,16 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using GraphQLServer.Api.Contexts;
 using Microsoft.EntityFrameworkCore;
-using GraphQLServer.Api.GraphQL.Middleware;
 using GraphQLServer.Core.Data;
 using GraphQL.Types;
 using GraphQLServer.Api.GraphQL.Schemas;
-using GraphQLServer.Api.GraphQL.Queries;
 using GraphQL;
 using GraphQLServer.Core.Repositories;
 using GraphQLServer.Core.Contexts;
 using GraphQLServer.Api.Api.GraphQL.Queries;
+using GraphQLServer.Data.Seed;
+using Microsoft.Extensions.Logging;
 
 namespace GraphQLServer.Api
 {
@@ -29,7 +28,13 @@ namespace GraphQLServer.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DocumentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GraphDatabaseConnection")));
+            var dbHostName = Environment.GetEnvironmentVariable("SQLSERVER_HOST") ?? "localhost";
+            Console.WriteLine($"SQL Server Host: {dbHostName}");
+            var dbPassword = Environment.GetEnvironmentVariable("SQLSERVER_SA_PASSWORD") ?? "Password123";
+            Console.WriteLine($"SQL Server Host: {dbPassword}");
+            var connString = $"Data Source={dbHostName};Initial Catalog=GraphQL;User ID=sa;Password={dbPassword};";
+            services.AddDbContext<DocumentContext>(options => options.UseSqlServer(connString));
+            //services.AddDbContext<DocumentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GraphDatabaseConnection")));
             //services.AddDbContext<DocumentContext>(options => options.UseInMemoryDatabase("Test"));
             services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
@@ -62,9 +67,13 @@ namespace GraphQLServer.Api
 
             app.UseStaticFiles();
 
-            //app.UseGraphQL();
-
             app.UseMvc();
+
+            using (var db = sv.GetService<DocumentContext>())
+            {
+                //db.Database.Migrate();
+                DocumentContextSeeder.Seed(db);
+            }
         }
     }
 }
