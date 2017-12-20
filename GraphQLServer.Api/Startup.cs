@@ -30,14 +30,13 @@ namespace GraphQLServer.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Startup));
-            //var dbHostName = Environment.GetEnvironmentVariable("SQLSERVER_HOST") ?? "localhost";
-            //Console.WriteLine($"SQL Server Host: {dbHostName}");
-            //var dbPassword = Environment.GetEnvironmentVariable("SQLSERVER_SA_PASSWORD") ?? "Password123";
-            //Console.WriteLine($"SQL Server Host: {dbPassword}");
-            //var connString = $"Data Source={dbHostName};Initial Catalog=GraphQL;User ID=sa;Password={dbPassword};";
-            //services.AddDbContext<DocumentContext>(options => options.UseSqlServer(connString));
-            services.AddDbContext<DocumentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GraphDatabaseConnection")));
-            //services.AddDbContext<DocumentContext>(options => options.UseInMemoryDatabase("Test"));
+            var dbHostName = Environment.GetEnvironmentVariable("SQLSERVER_HOST") ?? "localhost";
+            Console.WriteLine($"SQL Server Host: {dbHostName}");
+            var dbPassword = Environment.GetEnvironmentVariable("SQLSERVER_SA_PASSWORD") ?? "Password123";
+            Console.WriteLine($"SQL Server Host: {dbPassword}");
+            var connString = $"Data Source={dbHostName};Initial Catalog=GraphQL;User ID=sa;Password={dbPassword};";
+            services.AddDbContext<DocumentContext>(options => options.UseSqlServer(connString));
+
             services.AddScoped<IDocumentRepository, DocumentRepository>();
             services.AddScoped<IDocumentTypeRepository, DocumentTypeRepository>();
             services.AddScoped<IKeywordRepository, KeywordRepository>();
