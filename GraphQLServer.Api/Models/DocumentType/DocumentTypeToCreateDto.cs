@@ -1,10 +1,10 @@
-﻿using GraphQLServer.Api.Models.KeywordType;
+﻿using System.Collections.Generic;
 
 namespace GraphQLServer.Api.Models.DocumentType
 {
     public class DocumentTypeToCreateDto
     {
         public string Name { get; set; }
-        public KeywordTypeDto[] KeywordTypes { get; set; }
+        public ICollection<int> KeywordTypeIds { get; set; }
     }
 }

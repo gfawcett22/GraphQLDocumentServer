@@ -6,6 +6,6 @@ namespace GraphQLServer.Api.Models.Keyword
     {
         public int KeywordId { get; set; }
         public KeywordTypeDto KeywordType { get; set; }
-        public object Value { get; set; }
+        public string Value { get; set; }
     }
 }

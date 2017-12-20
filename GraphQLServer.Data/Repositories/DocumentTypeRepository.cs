@@ -23,6 +23,7 @@ namespace GraphQLServer.Core.Repositories
 
         public DocumentType GetDocumentType(int documentTypeId) => _context.DocumentTypes.FirstOrDefault(dt => dt.DocumentTypeId == documentTypeId);
 
+        public DocumentType GetDocumentTypeForDocument(int documentId) => _context.DocumentTypes.FirstOrDefault(dt => dt.Documents.Any(d => d.DocumentId == documentId));
         public void AddDocumentType(DocumentType documentType)
         {
             _context.DocumentTypes.Add(documentType);

@@ -8,6 +8,7 @@ namespace GraphQLServer.Data.Seed
     {
         public static void Seed(DocumentContext db)
         {
+            db.Database.EnsureDeleted();
             db.Database.EnsureCreated();
 
             // Keyword types

@@ -1,14 +1,18 @@
 ﻿using AutoMapper;
 using GraphQL.Types;
 using GraphQLServer.Api.GraphQL.Types;
+using GraphQLServer.Api.GraphQL.Types.Input;
+using GraphQLServer.Api.Models.Document;
+using GraphQLServer.Api.Models.DocumentType;
 using GraphQLServer.Core.Data;
 using GraphQLServer.Core.Models;
+using System.Linq;
 
 namespace GraphQLServer.Api.GraphQL.Mutations
 {
     public class DocumentMutation : ObjectGraphType<object>
     {
-        public DocumentMutation(IDocumentRepository docRepo, IMapper mapper)
+        public DocumentMutation(IDocumentRepository docRepo, IDocumentTypeRepository docTypeRepo, IKeywordRepository keywordRepo, IKeywordTypeRepository keywordTypeRepo, IMapper mapper)
         {
             Field<DocumentGraphType>("createDocument",
                 arguments: new QueryArguments(
@@ -16,10 +20,35 @@ namespace GraphQLServer.Api.GraphQL.Mutations
                 ),
                 resolve: context =>
                 {
-                    var document = context.GetArgument<DocumentInputType>("document");
+                    var document = context.GetArgument<DocumentToCreateDto>("document");
                     var mappedDoc = mapper.Map<Document>(document);
+                    mappedDoc.DocumentType = docTypeRepo.GetDocumentType(document.DocumentTypeId);
+                    var docKeywords = document.KeywordIds.Select(k => new DocumentKeyword { Document = mappedDoc, KeywordId = k }).ToList();
+                    mappedDoc.DocumentKeywords = docKeywords;
                     docRepo.AddDocument(mappedDoc);
-                    return docRepo.Save();
+                    if(!docRepo.Save())
+                    {
+                        throw new System.Exception("Error creating new document");
+                    }
+                    var documentToReturn = mapper.Map<DocumentDto>(mappedDoc);
+                    return documentToReturn;
+                });
+
+            Field<DocumentTypeGraphType>("createDocumentType",
+                arguments: new QueryArguments(
+                    new QueryArgument<NonNullGraphType<DocumentTypeInputType>> { Name = "documentType" }
+                ),
+                resolve: context =>
+                {
+                    var documentType = context.GetArgument<DocumentTypeToCreateDto>("documentType");
+                    var mappedDocType = mapper.Map<DocumentType>(documentType);
+                    mappedDocType.DocumentTypeKeywordTypes = documentType.KeywordTypeIds.Select(kt => new DocumentTypeKeywordType { DocumentType = mappedDocType, KeywordTypeId = kt }).ToList();
+                    docTypeRepo.AddDocumentType(mappedDocType);
+                    if (!docTypeRepo.Save())
+                    {
+                        throw new System.Exception("Error creating new Document Type");
+                    }
+                    return mapper.Map<DocumentTypeDto>(mappedDocType);
                 });
         }
     }

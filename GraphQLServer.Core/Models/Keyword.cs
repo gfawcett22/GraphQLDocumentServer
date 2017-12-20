@@ -11,7 +11,7 @@ namespace GraphQLServer.Core.Models
         public KeywordType KeywordType { get; set; }
         public string Value { get; set; }
         public ICollection<DocumentKeyword> DocumentKeywords { get; set; }
-        public override string ToString() => Value;
+        public override string ToString() => Value.ToString();
 
     }
 }

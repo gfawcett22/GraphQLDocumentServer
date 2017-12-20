@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using GraphQLServer.Api.GraphQL.Types;
+using GraphQLServer.Api.GraphQL.Types.Input;
+using GraphQLServer.Api.Models.Document;
+using GraphQLServer.Api.Models.DocumentType;
+using GraphQLServer.Api.Models.Keyword;
+using GraphQLServer.Api.Models.KeywordType;
 using GraphQLServer.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GraphQLServer.Api
 {
@@ -12,6 +13,23 @@ namespace GraphQLServer.Api
     {
         public MappingProfile()
         {
+            // DocumentDto
+            CreateMap<Document, DocumentDto>();
+            CreateMap<DocumentToCreateDto, Document>();
+            CreateMap<DocumentToUpdateDto, Document>();
+            // DocumentTypeDto
+            CreateMap<DocumentType, DocumentTypeDto>();
+            CreateMap<DocumentTypeToCreateDto, DocumentType>();
+            CreateMap<DocumentTypeToUpdateDto, DocumentType>();
+            // KeywordDto
+            CreateMap<Keyword, KeywordDto>();
+            CreateMap<KeywordToCreateDto, Keyword>();
+            CreateMap<KeywordToUpdateDto, Keyword>();
+            // KeywordTypeDto
+            CreateMap<KeywordType, KeywordTypeDto>();
+            CreateMap<KeywordTypeToCreateDto, KeywordType>();
+            CreateMap<KeywordTypeToUpdateDto, KeywordType>();
+
             CreateMap<DocumentInputType, Document>();
                 //.ForMember(dest => dest.AutoNameString, opt => opt.MapFrom(src => src.))
             CreateMap<DocumentTypeGraphType, DocumentType>();

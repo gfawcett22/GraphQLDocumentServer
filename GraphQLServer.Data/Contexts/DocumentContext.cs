@@ -40,6 +40,8 @@ namespace GraphQLServer.Core.Contexts
                 .HasOne(dk => dk.Keyword)
                 .WithMany(d => d.DocumentKeywords)
                 .HasForeignKey(dk => dk.KeywordId);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

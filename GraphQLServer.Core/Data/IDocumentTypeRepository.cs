@@ -7,6 +7,7 @@ namespace GraphQLServer.Core.Data
     {
         IEnumerable<DocumentType> GetDocumentTypes();
         DocumentType GetDocumentType(int documentTypeId);
+        DocumentType GetDocumentTypeForDocument(int documentId);
         void AddDocumentType(DocumentType documentType);
         void DeleteDocumentType(DocumentType documentType);
         void UpdateDocumentType(DocumentType documentType);

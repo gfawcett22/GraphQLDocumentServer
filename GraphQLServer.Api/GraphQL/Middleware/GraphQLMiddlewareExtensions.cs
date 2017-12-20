@@ -1,4 +1,5 @@
-﻿using GraphQL;
+﻿using AutoMapper;
+using GraphQL;
 using GraphQL.Http;
 using GraphQL.Types;
 using GraphQLServer.Api.Api.GraphQL.Queries;
@@ -28,7 +29,7 @@ namespace GraphQLServer.Api.GraphQL.Middleware
             _next = next;
         }
 
-        public async Task Invoke(HttpContext httpContext, IDocumentRepository docRepo, IDocumentTypeRepository docTypeRepo, IKeywordRepository keywordRepo, IKeywordTypeRepository keywordTypeRepo)
+        public async Task Invoke(HttpContext httpContext, IDocumentRepository docRepo, IDocumentTypeRepository docTypeRepo, IKeywordRepository keywordRepo, IKeywordTypeRepository keywordTypeRepo, IMapper mapper)
         {
             var sent = false;
             if (httpContext.Request.Path.StartsWithSegments("/graphql"))
@@ -38,7 +39,7 @@ namespace GraphQLServer.Api.GraphQL.Middleware
                     var query = await sr.ReadToEndAsync();
                     if (!String.IsNullOrWhiteSpace(query))
                     {
-                        var schema = new Schema { Query = new DocumentQuery(docRepo, docTypeRepo, keywordRepo, keywordTypeRepo) };
+                        var schema = new Schema { Query = new DocumentQuery(docRepo, docTypeRepo, keywordRepo, keywordTypeRepo, mapper) };
                         var result = await new DocumentExecuter()
                             .ExecuteAsync(opts =>
                             {
