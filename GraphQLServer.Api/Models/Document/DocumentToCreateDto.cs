@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using GraphQLServer.Api.Models.Keyword;
+using System.Collections.Generic;
 
 namespace GraphQLServer.Api.Models.Document
 {
@@ -6,6 +7,6 @@ namespace GraphQLServer.Api.Models.Document
     {
         public string AutoNameString { get; set; }
         public int DocumentTypeId { get; set; }
-        public ICollection<int> KeywordIds { get; set; }
+        public ICollection<KeywordToCreateDto> Keywords { get; set; }
     }
 }

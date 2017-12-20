@@ -5,6 +5,6 @@ namespace GraphQLServer.Api.Models.DocumentType
     public class DocumentTypeToUpdateDto
     {
         public string Name { get; set; }
-        public KeywordTypeDto[] KeywordTypes { get; set; }
+        public KeywordTypeToUpdateDto[] KeywordTypes { get; set; }
     }
 }

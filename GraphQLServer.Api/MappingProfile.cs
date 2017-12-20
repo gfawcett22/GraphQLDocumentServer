@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using GraphQLServer.Api.GraphQL.Types;
-using GraphQLServer.Api.GraphQL.Types.Input;
+using GraphQLServer.Api.GraphQL.Types.Create;
 using GraphQLServer.Api.Models.Document;
 using GraphQLServer.Api.Models.DocumentType;
 using GraphQLServer.Api.Models.Keyword;
@@ -30,8 +30,6 @@ namespace GraphQLServer.Api
             CreateMap<KeywordTypeToCreateDto, KeywordType>();
             CreateMap<KeywordTypeToUpdateDto, KeywordType>();
 
-            CreateMap<DocumentInputType, Document>();
-                //.ForMember(dest => dest.AutoNameString, opt => opt.MapFrom(src => src.))
             CreateMap<DocumentTypeGraphType, DocumentType>();
             CreateMap<KeywordGraphType, Keyword>();
             CreateMap<KeywordTypeGraphType, KeywordType>();

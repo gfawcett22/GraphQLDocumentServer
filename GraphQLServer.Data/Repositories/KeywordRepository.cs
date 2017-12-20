@@ -16,11 +16,16 @@ namespace GraphQLServer.Core.Repositories
         }
         public IEnumerable<Keyword> GetKeywords() => _context.Keywords.ToList();
 
-        public IEnumerable<Keyword> GetKeywords(int DocumentId) => _context.Keywords.Where(k => k.DocumentKeywords.Any(dk => dk.DocumentId == DocumentId));
+        public IEnumerable<Keyword> GetKeywords(int DocumentId) => _context.Keywords.Where(k => k.Document.DocumentId == DocumentId);
 
         public void AddKeyword(Keyword Keyword)
         {
             _context.Keywords.Add(Keyword);
+        }
+
+        public void AddKeywords(IEnumerable<Keyword> keywords)
+        {
+            _context.Keywords.AddRange(keywords);
         }
 
         public bool KeywordExists(int KeywordId) => _context.Keywords.Any(d => d.KeywordId == KeywordId);

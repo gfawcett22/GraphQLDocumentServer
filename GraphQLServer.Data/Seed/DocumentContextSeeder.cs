@@ -47,11 +47,11 @@ namespace GraphQLServer.Data.Seed
             // Documents
             var docList = new List<Document>
             {
-                new Document {AutoNameString = "This is the first document", DocumentType=docTypeList[0] },
-                new Document {AutoNameString = "This is the second document", DocumentType=docTypeList[1] },
-                new Document {AutoNameString = "This is the third document", DocumentType=docTypeList[2] },
-                new Document {AutoNameString = "This is the fourth document", DocumentType=docTypeList[3] },
-                new Document {AutoNameString = "This is the fifth document", DocumentType=docTypeList[0] }
+                new Document {AutoNameString = "This is the first document", DocumentType=docTypeList[0], Keywords=new List<Keyword>{ keywordList[0] } },
+                new Document {AutoNameString = "This is the second document", DocumentType=docTypeList[1], Keywords=new List<Keyword>{ keywordList[5], keywordList[3] } },
+                new Document {AutoNameString = "This is the third document", DocumentType=docTypeList[2], Keywords=new List<Keyword>{ keywordList[2] } },
+                new Document {AutoNameString = "This is the fourth document", DocumentType=docTypeList[3], Keywords=new List<Keyword>{ keywordList[8] } },
+                new Document {AutoNameString = "This is the fifth document", DocumentType=docTypeList[0], Keywords=new List<Keyword>{ keywordList[1] } }
             };
             db.Documents.AddRange(docList);
 
@@ -62,21 +62,6 @@ namespace GraphQLServer.Data.Seed
             db.Add(new DocumentTypeKeywordType { DocumentType = docTypeList[2], KeywordType = keywordTypeList[1] });
             db.Add(new DocumentTypeKeywordType { DocumentType = docTypeList[3], KeywordType = keywordTypeList[1] });
             db.Add(new DocumentTypeKeywordType { DocumentType = docTypeList[3], KeywordType = keywordTypeList[3] });
-            // Document Keyword Join
-            db.AddRange(
-                new DocumentKeyword { Document = docList[0], Keyword = keywordList[0] },
-                new DocumentKeyword { Document = docList[0], Keyword = keywordList[1] },
-                new DocumentKeyword { Document = docList[1], Keyword = keywordList[0] },
-                new DocumentKeyword { Document = docList[1], Keyword = keywordList[1] },
-                new DocumentKeyword { Document = docList[1], Keyword = keywordList[3] },
-                new DocumentKeyword { Document = docList[2], Keyword = keywordList[2] },
-                new DocumentKeyword { Document = docList[2], Keyword = keywordList[4] },
-                new DocumentKeyword { Document = docList[2], Keyword = keywordList[7] },
-                new DocumentKeyword { Document = docList[3], Keyword = keywordList[8] },
-                new DocumentKeyword { Document = docList[3], Keyword = keywordList[4] },
-                new DocumentKeyword { Document = docList[4], Keyword = keywordList[0] },
-                new DocumentKeyword { Document = docList[4], Keyword = keywordList[1] }
-            );
 
             db.SaveChanges();
         }

@@ -12,6 +12,7 @@ namespace GraphQLServer.Core.Data
         IEnumerable<Keyword> GetKeywords(int DocumentId);
         Keyword GetKeyword(int KeywordId);
         void AddKeyword(Keyword Keyword);
+        void AddKeywords(IEnumerable<Keyword> keywords);
         void DeleteKeyword(Keyword Keyword);
         void UpdateKeyword(Keyword Keyword);
         bool KeywordExists(int KeywordId);

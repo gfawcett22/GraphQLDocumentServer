@@ -28,19 +28,6 @@ namespace GraphQLServer.Core.Contexts
                 .WithMany(dk => dk.DocumentTypeKeywordTypes)
                 .HasForeignKey(dtkt => dtkt.KeywordTypeId);
 
-            modelBuilder.Entity<DocumentKeyword>()
-                .HasKey(dk => new { dk.DocumentId, dk.KeywordId });
-
-            modelBuilder.Entity<DocumentKeyword>()
-                .HasOne(dk => dk.Document)
-                .WithMany(d => d.DocumentKeywords)
-                .HasForeignKey(dk => dk.DocumentId);
-
-            modelBuilder.Entity<DocumentKeyword>()
-                .HasOne(dk => dk.Keyword)
-                .WithMany(d => d.DocumentKeywords)
-                .HasForeignKey(dk => dk.KeywordId);
-
             base.OnModelCreating(modelBuilder);
         }
     }

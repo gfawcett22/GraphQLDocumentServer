@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using GraphQL.Types;
 using GraphQLServer.Api.GraphQL.Types;
-using GraphQLServer.Api.GraphQL.Types.Input;
+using GraphQLServer.Api.GraphQL.Types.Create;
 using GraphQLServer.Api.Models.Document;
 using GraphQLServer.Api.Models.DocumentType;
-using GraphQLServer.Api.Models.Keyword;
 using GraphQLServer.Api.Models.KeywordType;
 using GraphQLServer.Core.Data;
 using GraphQLServer.Core.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GraphQLServer.Api.GraphQL.Mutations
@@ -18,15 +18,15 @@ namespace GraphQLServer.Api.GraphQL.Mutations
         {
             Field<DocumentGraphType>("createDocument",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<DocumentInputType>> { Name = "document" }
+                    new QueryArgument<NonNullGraphType<DocumentCreateInputType>> { Name = "document" }
                 ),
-                resolve: context =>
+                resolve: (ResolveFieldContext<object> context) =>
                 {
                     var document = context.GetArgument<DocumentToCreateDto>("document");
                     var mappedDoc = mapper.Map<Document>(document);
                     mappedDoc.DocumentType = docTypeRepo.GetDocumentType(document.DocumentTypeId);
-                    var docKeywords = document.KeywordIds.Select(k => new DocumentKeyword { Document = mappedDoc, KeywordId = k }).ToList();
-                    mappedDoc.DocumentKeywords = docKeywords;
+                    var keywordsToCreate = mapper.Map<IEnumerable<Keyword>>(document.Keywords);
+                    keywordRepo.AddKeywords(keywordsToCreate);
                     docRepo.AddDocument(mappedDoc);
                     if (!docRepo.Save())
                     {
@@ -38,7 +38,7 @@ namespace GraphQLServer.Api.GraphQL.Mutations
 
             Field<DocumentTypeGraphType>("createDocumentType",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<DocumentTypeInputType>> { Name = "documentType" }
+                    new QueryArgument<NonNullGraphType<DocumentTypeCreateInputType>> { Name = "documentType" }
                 ),
                 resolve: context =>
                 {
@@ -55,7 +55,7 @@ namespace GraphQLServer.Api.GraphQL.Mutations
 
             Field<KeywordTypeGraphType>("createKeywordType",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<KeywordTypeInputType>> { Name = "keywordType" }
+                    new QueryArgument<NonNullGraphType<KeywordTypeCreateInputType>> { Name = "keywordType" }
                     ),
                 resolve: context =>
                 {
@@ -69,20 +69,38 @@ namespace GraphQLServer.Api.GraphQL.Mutations
                     return mapper.Map<KeywordTypeDto>(mappedKeywordType);
                 });
 
-            Field<KeywordGraphType>("createKeyword",
+            //Field<KeywordGraphType>("createKeyword",
+            //    arguments: new QueryArguments(
+            //        new QueryArgument<NonNullGraphType<KeywordCreateInputType>> { Name = "keyword" }
+            //        ),
+            //    resolve: context =>
+            //    {
+            //        var keyword = context.GetArgument<KeywordToCreateDto>("keyword");
+            //        var mappedKeyword = mapper.Map<Keyword>(keyword);
+            //        keywordRepo.AddKeyword(mappedKeyword);
+            //        if (!keywordRepo.Save())
+            //        {
+            //            throw new System.Exception("Error creating keyword");
+            //        }
+            //        return mapper.Map<KeywordDto>(mappedKeyword);
+            //    });
+
+            Field<DocumentGraphType>("updateDocument",
                 arguments: new QueryArguments(
-                    new QueryArgument<NonNullGraphType<KeywordInputType>> { Name = "keyword" }
-                    ),
-                resolve: context =>
+                    new QueryArgument<NonNullGraphType<Types.Update.DocumentUpdateInputType>> { Name = "document" }
+                ),
+                resolve: (ResolveFieldContext<object> context) =>
                 {
-                    var keyword = context.GetArgument<KeywordToCreateDto>("keyword");
-                    var mappedKeyword = mapper.Map<Keyword>(keyword);
-                    keywordRepo.AddKeyword(mappedKeyword);
-                    if (!keywordRepo.Save())
+                    var document = context.GetArgument<DocumentToUpdateDto>("document");
+                    var documentFromRepo = docRepo.GetDocument(document.DocumentTypeId);
+                    mapper.Map(document, documentFromRepo);
+                    docRepo.UpdateDocument(documentFromRepo);
+                    if (!docRepo.Save())
                     {
-                        throw new System.Exception("Error creating keyword");
+                        throw new System.Exception("Error creating new document");
                     }
-                    return mapper.Map<KeywordDto>(mappedKeyword);
+                    var documentToReturn = mapper.Map<DocumentDto>(documentFromRepo);
+                    return documentToReturn;
                 });
         }
     }

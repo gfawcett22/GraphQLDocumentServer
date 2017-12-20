@@ -11,7 +11,7 @@ namespace GraphQLServer.Api.GraphQL.Types
 {
     public class DocumentGraphType : ObjectGraphType<DocumentDto>
     {
-        public DocumentGraphType(IDocumentTypeRepository docTypeRepo, IKeywordRepository keywordRepo, IMapper mapper)
+        public DocumentGraphType(IDocumentRepository docRepo, IDocumentTypeRepository docTypeRepo, IKeywordRepository keywordRepo, IMapper mapper)
         {
             Field(x => x.DocumentId).Name("Id").Description("The ID of the Document");
             Field(x => x.AutoNameString).Description("The Auto Name string to be displayed in the UI");
@@ -19,8 +19,7 @@ namespace GraphQLServer.Api.GraphQL.Types
                 resolve: context => mapper.Map<DocumentType, DocumentTypeDto>(docTypeRepo.GetDocumentTypeForDocument(context.Source.DocumentId)));
             Field<ListGraphType<KeywordGraphType>>("keywords",
                 resolve: context => {
-                    var test = mapper.Map<IEnumerable<Keyword>, IEnumerable<KeywordDto>>(keywordRepo.GetKeywords(context.Source.DocumentId));
-                    return test;
+                    return mapper.Map<IEnumerable<Keyword>, IEnumerable<KeywordDto>>(keywordRepo.GetKeywords(context.Source.DocumentId));
                 });
         }
     }
