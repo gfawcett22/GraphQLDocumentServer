@@ -15,7 +15,7 @@ namespace GraphQLServer.Api.GraphQL.Types
             Field(x => x.DocumentTypeId).Name("Id").Description("The Id of the Document Type");
             Field(x => x.Name).Description("The Name of the Document Type");
             Field<ListGraphType<KeywordTypeGraphType>>("keywordTypes", 
-                resolve: context => mapper.Map<IEnumerable<KeywordType>, IEnumerable<KeywordTypeDto>>(keywordTypeRepo.GetKeywordTypes()));
+                resolve: context => mapper.Map<IEnumerable<KeywordType>, IEnumerable<KeywordTypeDto>>(keywordTypeRepo.GetKeywordTypes(context.Source.DocumentTypeId)));
             Field<ListGraphType<DocumentGraphType>>("documents", 
                 resolve: context => mapper.Map<IEnumerable<Document>, IEnumerable<DocumentTypeDto>>(docRepo.GetDocuments(context.Source.DocumentTypeId)));
         }

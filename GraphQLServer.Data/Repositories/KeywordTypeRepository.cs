@@ -16,7 +16,7 @@ namespace GraphQLServer.Core.Repositories
         }
         public IEnumerable<KeywordType> GetKeywordTypes() => _context.KeywordTypes.ToList();
 
-        public IEnumerable<KeywordType> GetKeywordTypes(int DocumentTypeId) => _context.KeywordTypes.ToList();
+        public IEnumerable<KeywordType> GetKeywordTypes(int DocumentTypeId) => _context.KeywordTypes.Where(k => k.DocumentTypeKeywordTypes.Any(dtkt => dtkt.DocumentTypeId == DocumentTypeId)).ToList();
 
         public void AddKeywordType(KeywordType KeywordType)
         {
