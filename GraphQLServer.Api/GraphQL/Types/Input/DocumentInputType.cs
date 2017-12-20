@@ -6,7 +6,7 @@ namespace GraphQLServer.Api.GraphQL.Types.Input
     {
         public DocumentInputType()
         {
-            Name = "DocumentInput";
+            Name = "DocumentInputType";
             Field<NonNullGraphType<StringGraphType>>("autoNameString");
             Field<NonNullGraphType<IntGraphType>>("documentTypeId");
             Field<ListGraphType<IntGraphType>>("keywordIds");

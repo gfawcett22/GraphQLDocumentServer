@@ -1,0 +1,56 @@
+﻿# mutation DocumentMutation ($docType: DocumentTypeInput!) {
+#   createDocumentType (documentType: $docType) {
+#     name
+#   }
+# }
+
+# query {
+#   documentTypes {
+#     id
+#     name
+#     keywordTypes {
+#       name
+#     }
+#   }
+# }
+
+# mutation DocumentMutation ($doc: DocumentInput!){ 
+#    createDocument(document: $doc) {
+#     autoNameString
+    
+#   }
+# }
+
+# query {
+#   documents {
+#     id
+#     autoNameString    
+#   }
+# }
+
+# mutation DocumentMutation ($keywordType: KeywordTypeInput!) {
+#   createKeywordType (keywordType: $keywordType) {
+#     keywordTypeId
+#     name
+#   }
+# }
+
+-- Variables --
+
+{
+  "doc": {
+    "autoNameString": "Test",
+    "documentTypeId": 2,
+    "keywordIds": [1, 3]
+  },
+	"docType": {
+    "name": "AR - Purchase Order",
+    "keywordTypeIds": [1, 4]
+  },
+  "keywordType": {
+    "name": "AR - PO Number",
+    "invisible": false,
+    "notForRetrieval": true,
+    "dataType": "Numeric"
+  }
+}

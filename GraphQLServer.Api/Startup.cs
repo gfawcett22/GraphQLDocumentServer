@@ -48,11 +48,14 @@ namespace GraphQLServer.Api
 
             // GraphQL Types
             services.AddTransient<GraphQL.Types.DocumentGraphType>();
-            services.AddTransient<GraphQL.Types.Input.DocumentInputType>();
             services.AddTransient<GraphQL.Types.DocumentTypeGraphType>();
-            services.AddTransient<GraphQL.Types.Input.DocumentTypeInputType>();
             services.AddTransient<GraphQL.Types.KeywordGraphType>();
             services.AddTransient<GraphQL.Types.KeywordTypeGraphType>();
+            // Input types
+            services.AddTransient<GraphQL.Types.Input.DocumentInputType>();
+            services.AddTransient<GraphQL.Types.Input.DocumentTypeInputType>();
+            services.AddTransient<GraphQL.Types.Input.KeywordTypeInputType>();
+            services.AddTransient<GraphQL.Types.Input.KeywordInputType>();
 
             services.AddScoped<IDocumentExecuter, DocumentExecuter>();
             var sp = services.BuildServiceProvider();
