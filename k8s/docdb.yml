@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: docdb
+  name: docdb
+spec:
+  ports:
+  - port: 1433
+  selector:
+    app: docdb
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: docdb
+  labels:
+    app: docdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: docdb
+  template:
+    metadata:
+      labels:
+        app: docdb
+    spec:
+      containers:
+      - name: docdb
+        image: microsoft/mssql-server-linux:2017-latest
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: MSSQL_PID
+          value: Developer
+        - name: MSSQL_SA_PASSWORD
+          value: Pass@word

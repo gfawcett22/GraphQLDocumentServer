@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using GraphQLServer.Api.Extension;
 
 namespace GraphQLServer.Api
 {
@@ -15,7 +14,6 @@ namespace GraphQLServer.Api
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://*:5000")
                 .Build();
     }
 }

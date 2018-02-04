@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: graphapi
+  labels:
+    app: graphapi
+spec: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: graphapi
+  template:
+    metadata:
+      labels:
+        app: graphapi
+    spec:
+      containers:
+      - name: graphapi
+        image: api
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
